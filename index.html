@@ -1,0 +1,162 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="theme-color" content="#102b59">
+<title>Kartik AI • CBSE Tracker</title>
+<style>
+:root{--navy:#102b59;--blue:#1769c2;--pale:#eaf3ff;--bg:#f4f7fc;--ink:#17253b;--muted:#64748b;--line:#dce5f1;--white:#fff;--green:#16835d}
+*{box-sizing:border-box}body{margin:0;font-family:system-ui,-apple-system,Segoe UI,Roboto,Arial,sans-serif;background:var(--bg);color:var(--ink)}button,input,textarea,select{font:inherit}button{cursor:pointer}
+.app{min-height:100dvh;display:grid;grid-template-columns:260px minmax(0,1fr);max-width:1450px;margin:auto;background:white;box-shadow:0 0 40px #153a680a}
+aside{background:#f7faff;border-right:1px solid var(--line);padding:18px;display:flex;flex-direction:column;gap:18px}
+.brand{display:flex;gap:10px;align-items:center}.logo{width:43px;height:43px;background:linear-gradient(135deg,#102b59,#3985dd);color:white;border-radius:14px;display:grid;place-items:center;font-size:22px}.brand h1{font-size:16px;margin:0}.brand p{font-size:12px;color:var(--muted);margin:3px 0 0}
+.sideBtn{width:100%;border:1px solid var(--line);background:white;border-radius:12px;padding:11px;text-align:left;font-weight:650;color:var(--ink)}.sideBtn.primary{background:var(--blue);color:white;border-color:var(--blue)}.sideTitle{font-size:11px;color:var(--muted);font-weight:800;letter-spacing:1px;margin-bottom:8px}.miniStats{display:grid;grid-template-columns:1fr 1fr;gap:8px}.mini{background:white;border:1px solid var(--line);border-radius:12px;padding:10px}.mini b{display:block;font-size:20px;color:var(--blue)}.mini span{font-size:11px;color:var(--muted)}.subjectList{display:grid;gap:7px}.subjectItem{border:1px solid transparent;border-radius:11px;background:transparent;padding:10px;text-align:left;display:flex;justify-content:space-between;align-items:center;color:var(--ink)}.subjectItem.active{background:var(--pale);border-color:#cfe2fb;color:var(--blue);font-weight:750}
+main{display:flex;flex-direction:column;min-width:0;min-height:100dvh}.topbar{padding:16px 22px;border-bottom:1px solid var(--line);display:flex;align-items:center;justify-content:space-between;gap:10px}.topbar h2{margin:0;font-size:17px}.pill{background:#e6f8f0;color:#11734f;border-radius:99px;padding:5px 9px;font-size:11px;font-weight:800}
+.views{display:flex;gap:6px;padding:12px 20px;border-bottom:1px solid var(--line);overflow:auto}.viewBtn{border:0;background:transparent;padding:9px 12px;border-radius:10px;color:var(--muted);white-space:nowrap;font-weight:700}.viewBtn.active{background:var(--pale);color:var(--blue)}
+.panel{padding:20px;display:none}.panel.active{display:block}.cards{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:12px}.card{border:1px solid var(--line);border-radius:16px;padding:15px;background:white}.card h3{margin:0;font-size:14px}.big{font-size:27px;font-weight:850;color:var(--blue);margin-top:8px}.muted{color:var(--muted);font-size:12px}.bar{height:7px;background:#e7edf5;border-radius:99px;overflow:hidden;margin:10px 0}.bar span{display:block;height:100%;background:linear-gradient(90deg,#3985dd,#73b5ff);border-radius:99px}.sectionTitle{font-size:18px;margin:0 0 13px}.dateGrid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:10px;margin-top:15px}.dateCard{border:1px solid var(--line);border-radius:13px;padding:12px}.dateCard b{display:block}.notice{background:var(--pale);border:1px solid #cfe2fb;border-radius:14px;padding:13px;margin-top:14px;font-size:13px;line-height:1.5}
+.chatLayout{display:flex;flex-direction:column;height:calc(100dvh - 125px);min-height:490px;max-height:1000px}.chatIntro{max-width:760px;margin:18px auto 8px;text-align:center;padding:8px}.spark{font-size:35px}.chatIntro h3{font-size:23px;margin:7px 0}.chatIntro p{color:var(--muted);font-size:13px;margin:0}.suggestions{display:flex;gap:8px;flex-wrap:wrap;justify-content:center;margin-top:14px}.suggestion{border:1px solid var(--line);border-radius:12px;background:white;padding:10px 12px;text-align:left;font-size:12px;max-width:230px;color:var(--ink)}.messages{flex:1;overflow:auto;display:flex;flex-direction:column;gap:13px;padding:14px max(12px,calc((100% - 760px)/2));scroll-behavior:smooth}.msg{max-width:88%;padding:12px 14px;border-radius:16px;line-height:1.5;font-size:14px;white-space:pre-wrap;overflow-wrap:anywhere}.msg.user{align-self:flex-end;background:var(--blue);color:white;border-bottom-right-radius:5px}.msg.assistant{align-self:flex-start;background:#f1f5fa;border:1px solid #e2eaf4;border-bottom-left-radius:5px}.msg.system{align-self:center;background:#fff7df;color:#735719;font-size:12px;border:1px solid #f2df9d}.msg .actions{display:flex;gap:7px;flex-wrap:wrap;margin-top:9px}.inlineBtn{background:white;border:1px solid var(--line);border-radius:8px;padding:6px 9px;font-size:12px;color:var(--blue);font-weight:700}
+.composerWrap{padding:12px max(12px,calc((100% - 780px)/2)) 16px;border-top:1px solid var(--line);background:#ffffff}.composer{border:1px solid #cbd8e8;border-radius:18px;padding:8px;display:flex;gap:8px;align-items:flex-end;box-shadow:0 4px 15px #193e6b0a}.composer textarea{border:0;outline:0;resize:none;min-height:42px;max-height:130px;flex:1;padding:10px 8px;background:transparent;color:var(--ink)}.send{border:0;border-radius:12px;background:var(--blue);color:white;width:42px;height:42px;font-size:20px}.composerFoot{display:flex;justify-content:space-between;gap:8px;color:var(--muted);font-size:10px;padding:7px 3px 0}.checkControls{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:12px}.field{border:1px solid var(--line);border-radius:10px;padding:10px;background:white;color:var(--ink)}.chapters{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:8px}.chapter{display:flex;align-items:center;gap:9px;border:1px solid var(--line);border-radius:12px;padding:11px}.chapter.done{background:#f4fbf8;border-color:#b9dfd1}.chapter input{accent-color:var(--blue);width:18px;height:18px}.chapter div{flex:1;min-width:0}.chapter b{display:block;font-size:13px}.chapter small{display:block;color:var(--muted);font-size:10px;overflow-wrap:anywhere}.doneLabel{color:var(--green);font-size:10px;font-weight:800}
+.planForm{display:grid;grid-template-columns:1fr 1fr;gap:12px}.planForm label{display:grid;gap:6px;font-size:12px;color:var(--muted);font-weight:700}.planForm button{grid-column:1/-1}.planOutput{white-space:pre-wrap;line-height:1.7;font-size:14px;margin-top:15px}.settingsBox{max-width:700px}.settingsBox label{display:grid;gap:6px;font-size:13px;font-weight:700;margin:12px 0}.settingsBox input{width:100%;padding:11px;border:1px solid var(--line);border-radius:10px}.smallBtn{border:1px solid var(--line);background:white;padding:9px 12px;border-radius:10px;font-weight:700;color:var(--ink)}.foot{font-size:11px;color:var(--muted);line-height:1.5;margin-top:14px}
+@media(max-width:760px){.app{display:block}aside{border-right:0;border-bottom:1px solid var(--line);padding:12px;gap:11px}.sideActions{display:flex;gap:8px}.sideActions .sideBtn{width:auto;flex:1}.sidebarDetails{display:none}.topbar{padding:13px 16px}.panel{padding:14px}.cards{grid-template-columns:1fr 1fr}.cards .card:last-child{grid-column:1/-1}.dateGrid{grid-template-columns:1fr}.chatLayout{height:calc(100dvh - 180px);min-height:470px}.messages{padding:12px 5px}.msg{max-width:94%}.composerWrap{padding:10px}.chapters{grid-template-columns:1fr}.planForm{grid-template-columns:1fr}.planForm button{grid-column:auto}}
+</style>
+</head>
+<body>
+<div class="app">
+<aside>
+ <div class="brand"><div class="logo">🔵</div><div><h1>Kartik AI</h1><p>CBSE Class 10 · 2027</p></div></div>
+ <div class="sideActions"><button class="sideBtn primary" id="newChat">＋ New chat</button><button class="sideBtn" id="quickPlan">Study plan</button></div>
+ <div class="sidebarDetails"><div class="sideTitle">YOUR PROGRESS</div><div class="miniStats"><div class="mini"><b id="sideDone">24</b><span>Chapters done</span></div><div class="mini"><b id="sideLeft">24</b><span>Remaining</span></div></div></div>
+ <div class="sidebarDetails"><div class="sideTitle">SUBJECTS</div><div class="subjectList" id="sideSubjects"></div></div>
+ <div class="sidebarDetails" style="margin-top:auto"><button class="sideBtn" id="settingsBtn">⚙ AI connection settings</button><p class="foot">Your checklist stays on this device. AI replies require a secure backend connection.</p></div>
+</aside>
+<main>
+ <div class="topbar"><h2 id="topTitle">AI Study Chat</h2><span class="pill">STUDY MODE</span></div>
+ <div class="views"><button class="viewBtn active" data-view="chat">💬 AI Chat</button><button class="viewBtn" data-view="progress">📊 Progress</button><button class="viewBtn" data-view="planner">📅 Study planner</button><button class="viewBtn" data-view="settings">🔐 AI setup</button></div>
+ <section class="panel active" id="chatPanel" style="padding:0">
+  <div class="chatLayout">
+   <div class="chatIntro" id="chatIntro"><div class="spark">✨</div><h3>What are we studying today?</h3><p>Ask about Class 10, plan your revision, or update chapter progress.</p>
+    <div class="suggestions"><button class="suggestion" data-prompt="Make a study plan for my remaining Maths chapters.">📘 Plan my Maths revision</button><button class="suggestion" data-prompt="Show my CBSE tracker progress and suggest the next step.">📊 Review my progress</button><button class="suggestion" data-prompt="Explain how to revise a Class 10 Science chapter effectively.">🔬 Science revision strategy</button><button class="suggestion" data-prompt="I finished Maths Chapter 5. Mark it complete.">✅ Mark Maths Chapter 5 complete</button></div>
+   </div>
+   <div class="messages" id="messages" aria-live="polite"></div>
+   <div class="composerWrap"><form class="composer" id="chatForm"><textarea id="chatInput" rows="1" placeholder="Message Kartik AI…" aria-label="Message Kartik AI"></textarea><button class="send" aria-label="Send message">↑</button></form><div class="composerFoot"><span>Class 10 · Science · Maths · SST · AI</span><span>AI replies need secure setup</span></div></div>
+  </div>
+ </section>
+ <section class="panel" id="progressPanel">
+  <h3 class="sectionTitle">Your chapter progress</h3><div class="cards" id="progressCards"></div>
+  <div class="notice"><b>Next priority:</b> Maths is your lowest completion percentage. Chapters 5 and 6 are marked untouched in the uploaded data.</div>
+  <h3 class="sectionTitle" style="margin-top:22px">Chapter checklist</h3>
+  <div class="checkControls"><select class="field" id="subjectFilter"><option value="science">Science</option><option value="maths">Maths</option><option value="sst">Social Science</option></select><select class="field" id="chapterFilter"><option value="all">All chapters</option><option value="remaining">Remaining</option><option value="done">Completed</option></select><input class="field" id="chapterSearch" placeholder="Search chapters…"></div>
+  <div class="chapters" id="chapters"></div><div class="checkControls" style="margin-top:13px"><button class="smallBtn" id="exportProgress">Export progress JSON</button><button class="smallBtn" id="resetProgress">Reset to uploaded data</button></div>
+ </section>
+ <section class="panel" id="plannerPanel">
+  <h3 class="sectionTitle">📅 Build a study plan</h3><p class="muted">Creates a practical plan from your tracker. You can also ask the AI chat to adjust it.</p>
+  <div class="card"><div class="planForm"><label>Plan length (days)<select class="field" id="planDays"><option>7</option><option selected>14</option><option>30</option><option>60</option></select></label><label>Daily study time<select class="field" id="planHours"><option value="1">1 hour</option><option value="2" selected>2 hours</option><option value="3">3 hours</option><option value="4">4 hours</option></select></label><label>Priority subject<select class="field" id="planSubject"><option value="maths">Maths</option><option value="science">Science</option><option value="sst">Social Science</option><option value="balanced">Balanced</option></select></label><label>Start date<input class="field" id="planStart" type="date" value="2026-10-17"></label><button class="sideBtn primary" id="generatePlan">Generate my plan</button></div><div class="planOutput" id="planOutput">Choose your settings and generate a plan. Your completed chapters will be excluded from the remaining-chapter targets.</div><button class="smallBtn" id="askAIPlan" style="margin-top:12px">Ask AI to improve this plan ↗</button></div>
+ </section>
+ <section class="panel" id="settingsPanel">
+  <div class="settingsBox"><h3 class="sectionTitle">🔐 Secure AI connection</h3><div class="notice"><b>Important:</b> This standalone HTML app does not include a live AI connection. Do not paste an OpenAI API key into this page or share it in chat. A secure backend must keep the key secret and make AI requests for the app.</div>
+   <h3 style="margin-top:20px">Backend URL</h3><label>HTTPS endpoint<input id="backendUrl" type="url" placeholder="https://your-domain.example/api/chat"></label><p class="muted">Enter a backend endpoint you control. It should accept JSON with a messages array and tracker context, and return JSON such as {"reply":"..."}.</p>
+   <button class="sideBtn primary" id="saveBackend">Save backend URL on this device</button> <button class="smallBtn" id="testBackend">Test connection</button>
+   <p id="backendStatus" class="muted" role="status">No backend configured.</p>
+   <h3 style="margin-top:24px">What a secure backend does</h3><ol style="line-height:1.7;font-size:13px;padding-left:20px"><li>Stores your API key in a server environment variable, never in browser code.</li><li>Receives the student's message and relevant chapter progress.</li><li>Calls the AI provider from the server.</li><li>Returns only the assistant's reply to the browser.</li><li>Adds rate limits and basic abuse protection so the key cannot be freely abused.</li></ol>
+   <p class="foot">Backend URL is saved locally in this browser. Configure only an endpoint you trust. AI responses may be inaccurate; verify important exam information against NCERT and official CBSE sources.</p>
+  </div>
+ </section>
+</main>
+</div>
+<script>
+const base={
+ science:{label:"Science",icon:"🔬",total:13,chapters:Array.from({length:13},(_,i)=>({id:`science.ch${i+1}`,name:`Chapter ${i+1}`}))},
+ maths:{label:"Maths",icon:"➗",total:14,chapters:Array.from({length:14},(_,i)=>({id:`maths.ch${i+1}`,name:`Chapter ${i+1}`}))},
+ sst:{label:"Social Science",icon:"🌍",total:21,chapters:[...Array.from({length:5},(_,i)=>({id:`sst.hist_ch${i+1}`,name:`History · Chapter ${i+1}`})),...Array.from({length:7},(_,i)=>({id:`sst.geo_ch${i+1}`,name:`Geography · Chapter ${i+1}`})),...Array.from({length:5},(_,i)=>({id:`sst.pol_ch${i+1}`,name:`Civics · Chapter ${i+1}`})),...Array.from({length:4},(_,i)=>({id:`sst.eco_ch${i+1}`,name:`Economics · Chapter ${i+1}`}))]}
+};
+const originalDone=["science.ch1","science.ch2","science.ch3","science.ch5","science.ch6","science.ch9","science.ch10","science.ch11","science.ch13","maths.ch1","maths.ch2","maths.ch3","maths.ch4","maths.ch8","sst.hist_ch1","sst.hist_ch2","sst.geo_ch1","sst.geo_ch2","sst.geo_ch3","sst.pol_ch1","sst.pol_ch2","sst.pol_ch3","sst.eco_ch1","sst.eco_ch2"];
+const all=Object.values(base).flatMap(s=>s.chapters);
+let done=new Set(originalDone),activeView="chat",history=[];
+try{let x=JSON.parse(localStorage.getItem("kartik-ai-done-v1")||"null");if(Array.isArray(x))done=new Set(x.filter(id=>all.some(c=>c.id===id)));}catch{}
+try{document.getElementById("backendUrl").value=localStorage.getItem("kartik-ai-backend-v1")||"";}catch{}
+const $=id=>document.getElementById(id);
+function save(){try{localStorage.setItem("kartik-ai-done-v1",JSON.stringify([...done]));}catch{}}
+function count(k){return base[k].chapters.filter(c=>done.has(c.id)).length}
+function ctx(){return Object.entries(base).map(([k,s])=>`${s.label}: ${count(k)}/${s.total} complete; remaining: ${s.chapters.filter(c=>!done.has(c.id)).map(c=>c.name+" ["+c.id+"]").join(", ")}`).join("\n")}
+function setView(v){activeView=v;document.querySelectorAll(".viewBtn").forEach(b=>b.classList.toggle("active",b.dataset.view===v));document.querySelectorAll(".panel").forEach(p=>p.classList.toggle("active",p.id===v+"Panel"));$("topTitle").textContent=({chat:"AI Study Chat",progress:"Chapter Progress",planner:"Personal Study Planner",settings:"AI Connection Setup"})[v];if(v==="progress")renderProgress();if(v==="settings")$("backendStatus").textContent=$("backendUrl").value?"Backend URL configured. Use Test connection to check it.":"No backend configured."}
+document.querySelectorAll(".viewBtn").forEach(b=>b.addEventListener("click",()=>setView(b.dataset.view)));
+$("newChat").onclick=()=>{history=[];$("messages").innerHTML="";$("chatIntro").style.display="block";setView("chat");};
+$("quickPlan").onclick=()=>{setView("planner");generatePlan();};
+$("settingsBtn").onclick=()=>setView("settings");
+function renderProgress(){
+ $("sideDone").textContent=[...done].length;$("sideLeft").textContent=all.length-done.size;
+ const cards=$("progressCards");cards.innerHTML="";
+ Object.entries(base).forEach(([k,s])=>{let n=count(k),pct=Math.round(n/s.total*100);let el=document.createElement("div");el.className="card";el.innerHTML=`<h3>${s.icon} ${s.label}</h3><div class="big">${n}/${s.total}</div><div class="muted">${pct}% complete · ${s.total-n} remaining</div><div class="bar"><span style="width:${pct}%"></span></div>`;cards.append(el)});
+ const side=$("sideSubjects");side.innerHTML="";Object.entries(base).forEach(([k,s])=>{let b=document.createElement("button");b.className="subjectItem";b.innerHTML=`<span>${s.icon} ${s.label}</span><span>${count(k)}/${s.total}</span>`;b.onclick=()=>{$("subjectFilter").value=k;renderChapters();};side.append(b)});
+ renderChapters();
+}
+function renderChapters(){
+ const k=$("subjectFilter").value,s=base[k],f=$("chapterFilter").value,q=$("chapterSearch").value.toLowerCase();const root=$("chapters");root.innerHTML="";
+ s.chapters.filter(c=>(f==="all"||(f==="done"&&done.has(c.id))||(f==="remaining"&&!done.has(c.id)))&&(c.name+" "+c.id).toLowerCase().includes(q)).forEach(c=>{
+  let yes=done.has(c.id),lab=document.createElement("label");lab.className="chapter"+(yes?" done":"");let input=document.createElement("input");input.type="checkbox";input.checked=yes;let text=document.createElement("div"),b=document.createElement("b"),sm=document.createElement("small");b.textContent=c.name;sm.textContent=c.id;text.append(b,sm);lab.append(input,text);if(yes){let tag=document.createElement("span");tag.className="doneLabel";tag.textContent="DONE";lab.append(tag)}input.onchange=()=>{input.checked?done.add(c.id):done.delete(c.id);save();renderProgress();};root.append(lab);
+ });
+ if(!root.children.length)root.innerHTML='<div class="muted">No chapters match.</div>';
+}
+$("subjectFilter").onchange=renderChapters;$("chapterFilter").onchange=renderChapters;$("chapterSearch").oninput=renderChapters;
+$("exportProgress").onclick=()=>{let blob=new Blob([JSON.stringify({profile:"Kartik",grade:10,progress:[...done],exportedAt:new Date().toISOString()},null,2)],{type:"application/json"});let a=document.createElement("a");a.href=URL.createObjectURL(blob);a.download="kartik-ai-progress.json";a.click();setTimeout(()=>URL.revokeObjectURL(a.href),1000)};
+$("resetProgress").onclick=()=>{if(confirm("Reset chapter status to your uploaded JSON?")){done=new Set(originalDone);save();renderProgress();}};
+function generatePlan(){
+ let days=Number($("planDays").value),hours=Number($("planHours").value),priority=$("planSubject").value,start=$("planStart").value||"2026-10-17";
+ let keys=priority==="balanced"?["maths","science","sst"]:[priority,...["maths","science","sst"].filter(k=>k!==priority)];
+ let remaining={};keys.forEach(k=>remaining[k]=base[k].chapters.filter(c=>!done.has(c.id)));
+ let lines=[`KARTIK'S ${days}-DAY STUDY PLAN`,`Start: ${start} · ${hours} hour(s) per day`,`Current progress: ${[...done].length}/${all.length} chapters marked complete.`,``,`Daily structure: ${Math.max(20,Math.round(hours*60*.55))} min concept/NCERT · ${Math.max(15,Math.round(hours*60*.3))} min questions · ${Math.max(10,Math.round(hours*60*.15))} min active recall.`,""];
+ for(let d=0;d<days;d++){
+  let date=new Date(start+"T12:00:00");date.setDate(date.getDate()+d);let dateLabel=date.toLocaleDateString("en-IN",{day:"numeric",month:"short"});
+  let k=keys[d%keys.length],arr=remaining[k],chapter=arr.shift();
+  if(!chapter){let alt=keys.find(x=>remaining[x].length);if(alt){k=alt;chapter=remaining[k].shift();}}
+  lines.push(`DAY ${d+1} · ${dateLabel}`);
+  if(chapter)lines.push(`• ${base[k].label}: ${chapter.name} (${chapter.id}) — revise NCERT/theory, solve questions, then check errors.`);
+  else lines.push("• All currently uncompleted chapters have been assigned. Use this session for a timed paper, error log, and revision.");
+  lines.push(`• ${hours>1?"Review yesterday's mistakes and recall key formulas/definitions.":"Finish with a 5-minute closed-book recall."}`);
+  lines.push("");
+ }
+ lines.push("Rules: mark a chapter complete only after learning it and attempting questions. Keep one lighter revision session each week. This generated plan is a starting point; adjust it to schoolwork and actual chapter difficulty.");
+ $("planOutput").textContent=lines.join("\n");
+}
+$("generatePlan").onclick=generatePlan;
+$("askAIPlan").onclick=()=>{let p=$("planOutput").textContent;setView("chat");sendMessage("Improve this study plan using my current chapter tracker. Keep it realistic for Class 10 and explain what to prioritize:\n"+p)};
+document.querySelectorAll("[data-prompt]").forEach(b=>b.onclick=()=>sendMessage(b.dataset.prompt));
+function addMsg(role,text){let div=document.createElement("div");div.className="msg "+role;div.textContent=text;$("messages").append(div);$("messages").scrollTop=$("messages").scrollHeight;return div}
+function maybeLocalAction(text){
+ let t=text.toLowerCase(),changed=false,answer="";
+ const subjects=[["maths",/\b(math|maths|mathematics)\b/],["science",/\bscience\b/],["sst",/\b(sst|social science|history|geography|civics|economics)\b/]];
+ const nums=[...t.matchAll(/chapter\s*(\d+)/g)].map(m=>Number(m[1]));
+ const wantsDone=/\b(finish(?:ed)?|complete(?:d)?|mark(?:ed)?\s*(?:as\s*)?(?:done|complete)|done|tick)\b/.test(t);
+ const wantsUndo=/\b(unmark|undo|incomplete|not done|untick)\b/.test(t);
+ const subj=subjects.find(x=>x[1].test(t));
+ if((wantsDone||wantsUndo)&&nums.length&&subj){
+  let k=subj[0],list=base[k].chapters;
+  nums.forEach(n=>{let c=list.find(c=>c.id===`${k}.ch${n}`)||list.find(c=>new RegExp(`(?:hist|geo|pol|eco)_ch${n}$`).test(c.id));if(c){wantsUndo?done.delete(c.id):done.add(c.id);changed=true;}});
+  if(changed){save();renderProgress();answer=`Updated your tracker. ${ctx()}`;return answer;}
+ }
+ if(/progress|how much|how many chapters|status/.test(t)){return "Here is your current tracker progress:\n"+ctx()+"\n\nSuggestion: Maths has the lowest completion percentage. Start with a remaining chapter, then complete NCERT questions before moving to Exemplar and PYQs."}
+ return null;
+}
+async function sendMessage(text){
+ text=(text||"").trim();if(!text)return;setView("chat");$("chatIntro").style.display="none";addMsg("user",text);$("chatInput").value="";
+ const local=maybeLocalAction(text);
+ if(local){addMsg("assistant",local);history.push({role:"user",content:text},{role:"assistant",content:local});return;}
+ const endpoint=$("backendUrl").value.trim();
+ if(!endpoint){addMsg("assistant","I can help plan and manage your studies, but live AI is not connected yet.\n\nYou can still use the Progress and Study planner tabs. To enable ChatGPT-style replies, set up a secure backend in the AI setup tab and save its HTTPS URL. Do not put an API key in this app.");return;}
+ const pending=addMsg("assistant","Thinking…");
+ try{
+  const messages=[...history,{role:"user",content:text}];
+  const res=await fetch(endpoint,{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({messages,tracker:{profile:"Kartik",grade:10,progress:[...done],context:ctx()}})});
+  if(!res.ok)throw new Error("Backend returned HTTP "+res.status);
+  const data=await res.json();const reply=data.reply||data.message||data.output_text;
+  if(typeof reply!=="string")throw new Error('Expected JSON with a "reply" string');
+  pending.textContent=reply;history.push({role:"user",content:text},{role:"assistant",content:reply});
+ }catch(e){pending.textContent="I couldn't reach the AI backend. Check that the HTTPS URL is correct, the server is running, CORS allows this app's origin, and the server returns JSON with a reply field.\n\nTechnical detail: "+e.message;}
+}
+$("chatForm").addEventListener("submit",e=>{e.preventDefault();sendMessage($("chatInput").value)});
+$("chatInput").addEventListener("keydown",e=>{if(e.key==="Enter"&&!e.shiftKey){e.preventDefault();$("chatForm").requestSubmit()}});
+$("saveBackend").onclick=()=>{let v=$("backendUrl").value.trim();try{if(v&&!v.startsWith("https://"))throw new Error("Use an HTTPS URL for a secure deployed backend.");localStorage.setItem("kartik-ai-backend-v1",v);$("backendStatus").textContent=v?"Backend URL saved on this device.":"Backend URL cleared."; }catch(e){$("backendStatus").textContent=e.message;}};
+$("testBackend").onclick=async()=>{let u=$("backendUrl").value.trim();if(!u){$("backendStatus").textContent="Enter your HTTPS backend URL first.";return}try{let r=await fetch(u,{method:"OPTIONS"});$("backendStatus").textContent=`Endpoint responded with HTTP ${r.status}. This alone does not confirm AI replies work; send a test message in AI Chat.`}catch(e){$("backendStatus").textContent="Could not test endpoint from this browser. Check URL, CORS and server status.";}}
+renderProgress();
+</script>
+</body></html>
